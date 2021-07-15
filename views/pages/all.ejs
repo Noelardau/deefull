@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All</title>
+    <link rel="stylesheet" href="/assets/semantic/semantic.min.css">
+    <link rel="stylesheet" href="/assets/style.css">
+    <style>
+        .hide{
+            display: none;
+        }
+    </style>
+
+
+</head>
+<body>
+    <div class="ui menu">
+        <div class="ui header medium">Dee'full</div> <small>(commentaire anonyme)</small> <br>
+        <div class="item right"><a href="/">go!</a></div>
+    </div> 
+    <div class="ui container">
+    <div class="ui message blue">Tout vos posts </div>
+
+
+<% if(locals.commentaires != undefined){%>
+
+    <% if(locals.commentaires.length > 3){%>
+        
+        <form action='/deleteAlls'>
+            <button class="ui button red">delete all</button>
+        </form>
+    
+    <%}%>
+    <%locals.commentaires.forEach((commentaire)=>{%>
+        
+        <div class="ui message blue">
+            
+            <%=commentaire.commentaire%>
+            <span style="opacity: 0;" id='id'>
+                <%= commentaire.id %>
+            </span>
+            <form class="hide" action="/editComments" method="post">
+                <input type="text" name="update">
+                <input type="hidden" value='<%= commentaire.id %>' name='id'>
+                <i class="close icon"></i>
+            </form>
+            <i class="write icon"></i>
+            <i class="trash red icon"></i>
+        </div>
+    
+    <%})%>
+    
+
+<%}%>
+    
+   
+<div class="ui horizontal divider" id="copyright">&copy;2021</div>
+    </div>
+    <script src="/assets/jquery.js"></script>
+  
+  <script>
+// delete 
+$('.ui.message').on('click','.icon.trash',function(){
+    var id = $(this).parent().find('span').html()
+    $.post('/deleteComments',{id:id},(data)=>{
+        $(this).parent().hide(500)
+    })
+})
+
+// update
+
+$('.ui.message').on('click','.icon.write',function(){
+  
+    var form = $(this).parent().find('form')
+    var cancel = $(this).parent().find('.close')
+    form.removeClass('hide')
+  form.keydown((e)=>{
+      if(e.key === 'Escape'){
+    form.addClass('hide')
+
+      }
+  })
+
+  cancel.click(()=>{
+      form.addClass('hide')
+  })
+
+})
+
+
+    </script>
+
+
+</body>
+</html>

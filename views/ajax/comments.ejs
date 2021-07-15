@@ -1,0 +1,19 @@
+
+<% if(locals.commentaires != undefined){%>
+    
+    <%locals.commentaires.forEach((commentaire)=>{%>
+        
+        <div class="ui message blue">
+            
+            <%=commentaire.commentaire%>
+            <span style="opacity: 0;" id='id'>
+                <%= commentaire.id %>
+            </span>
+    
+         
+        </div>
+    
+    <%})%>
+    
+
+<%} %>
